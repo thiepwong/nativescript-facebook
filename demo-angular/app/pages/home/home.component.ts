@@ -42,8 +42,30 @@ export class HomeComponent {
         } else {
             appSettings.clear();
             this.navigationService.go(['login'], "slideRight");
-        }
+        } 
+    } 
+    share(){
+        let params = {
+            success:true
+        } 
+     let    builder = { 
+              contentUrl:'http://dantri.com/thoisu',
+            peopleIds:'3453453453534535345',
+        placeId:'34535345',
+        pageId:'3453534534',
+       ref:'http://vietnamnet.vn',
+        hashtag:'#caigithe'
+     }
+     console.log('Da goi den ham ngoai') 
 
+        // Facebook.shareContent( builder,params,(res)=>{ 
+        //     console.log('callback o ngoai cung:->',res);
+        //  });
+        //100000095401346_2221464804533345?fields=full_picture,message,attachments
+        Facebook.share('https://www.facebook.com/2029479200398574/posts/2208708965808929','https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-1/p160x160/943879_1141052305907939_4784385844732304607_n.jpg?_nc_cat=109&_nc_ht=scontent.fhan3-1.fna&oh=efb5dda8f4054e8be0099e42c6242986&oe=5C490BB3',(err,res)=>{
+            if(err) return   console.log('Thong tin loi: ',err);
+            return console.log('Thong tin thanh cong: ',res);
+        })
     }
 
     logout() {
@@ -58,4 +80,4 @@ export class HomeComponent {
 
         alert("Current access token: " + JSON.stringify(accessToken, null, '\t'));
     }
-}
+} 

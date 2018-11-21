@@ -11,7 +11,7 @@ import { NavigationService } from "./services/navigation.service";
 import { init, LoginBehavior } from "nativescript-facebook";
 
 application.on(application.launchEvent, function (args) {
-    init("1771472059772879", LoginBehavior.LoginBehaviorWeb);
+    init("189873141843704", LoginBehavior.LoginBehaviorWeb);
 });
 
 @NgModule({

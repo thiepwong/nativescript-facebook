@@ -7,8 +7,9 @@
         <Label text="{{ username }}"></Label>
     </StackLayout>
     <StackLayout class="buttons">
+       <Button text="Share Ngay" (tap)="share()"></Button>
         <FacebookLoginButton (logout)="onLogout($event)"></FacebookLoginButton>
-        <Button text="Log out (custom)" (tap)="logout()"></Button>
+        <Button text="Log out (custom moi)" (tap)="logout()"></Button>
         <Button text="Get current access token" (tap)="getCurrentAccessToken()"></Button>
     </StackLayout>
 </StackLayout>

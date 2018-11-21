@@ -51,6 +51,10 @@ export class HomeViewModel extends Observable {
     });
   }
 
+  public post(){
+     
+  }
+
   public getCurrentAccessToken() {
     let accessToken = getCurrentAccessToken();
 

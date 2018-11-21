@@ -4,18 +4,20 @@ let shareCallback;
 let androidApplication;
 let _act: android.app.Activity; 
 
-
 export function _registerShareCallback(callback: Function) {
     let onShareCallback = com.facebook.CallbackManager.Factory.create();
-    _act = androidApplication.startActivity || androidApplication.foregroundActivity;
-    shareCallback.registerCallback(onShareCallback, new com.facebook.FacebookCallback({
-
+    shareCallback.registerCallback(onShareCallback, new com.facebook.FacebookCallback({ 
         onSuccess: function (result) {
-            callback(null, result);
+            callback(null, {
+                code:200,
+                msg:'Post success shared!'
+            });
         },
         onCancel: function () {
-            callback(new Error('canceled'));
-
+            callback({
+                code:504,
+                msg:'Cancel post share!'
+            });
         },
         onError: function (e) {
             let errorMessage = "Error with Facebook";
@@ -28,9 +30,12 @@ export function _registerShareCallback(callback: Function) {
             else {
                 errorMessage += ": " + e;
             }
-            callback(new Error(errorMessage));
-        }
-
+            callback({
+                code:'500',
+                msg:'Facebook post share error!',
+                detail: errorMessage
+            });
+        } 
     }));
 
     let onActivityResult = (args) => {
@@ -40,25 +45,23 @@ export function _registerShareCallback(callback: Function) {
     };
 
     let unsubscribe = () => {
-        androidApplication.off(application.AndroidApplication.activityResultEvent, onActivityResult);
+        application.android.off(application.AndroidApplication.activityResultEvent, onActivityResult);
     };
 
-    androidApplication.on(application.AndroidApplication.activityResultEvent, onActivityResult);
+    application.android.on(application.AndroidApplication.activityResultEvent, onActivityResult);
 }
-
-
-export function share(content: any, callback: Function) {
-    let builder = new com.facebook.share.model.ShareLinkContent.Builder()
-    builder.setContentTitle('Thon gbao moi');
-    builder.setContentDescription('Thong bao moi tu facebook chinh');
-    builder.setContentUrl(android.net.Uri.parse(content))
-    var result = builder.build();
-
-    var activity = application.android.foregroundActivity || application.android.startActivity;
-    var shareDialog = new com.facebook.share.widget.ShareDialog(activity);
+ 
+export function share(content: any,imgThumnal:any, callback: Function) { 
+    _act =  application.android.foregroundActivity || application.android.startActivity;
+    let builder = new com.facebook.share.model.ShareLinkContent.Builder().setContentDescription('Da set content').setContentTitle('Set tieu de').setContentUrl(android.net.Uri.parse(content)).build();
+    // builder.setContentTitle('Thon gbao moi');
+    // builder.setImageUrl(android.net.Uri.parse(imgThumnal))
+    // builder.setContentDescription('Thong bao moi tu facebook chinh');
+    // builder.setContentUrl(android.net.Uri.parse(content))
+    // var result = builder.build();
+    shareCallback = new com.facebook.share.widget.ShareDialog(_act);
     _registerShareCallback(callback);
-    shareDialog.show(result);
-
+    shareCallback.show(builder);
 }
 
 export function shareContent(content, params, callback) {
